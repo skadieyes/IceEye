@@ -1188,12 +1188,12 @@ var ResumeComponent = (function () {
         chartUiView.setOption(uiViewData);
         var texture = new THREE.Texture();
         var loader2 = new THREE.ImageLoader();
-        loader2.load('./../../assets/textures/Banana.png', function (image) {
+        loader2.load('assets/textures/Banana.png', function (image) {
             texture.image = image;
             texture.needsUpdate = true;
         });
         var loader = new THREE.OBJLoader();
-        loader.load('./../../assets/obj/Banana.obj', function (loadedMesh) {
+        loader.load('assets/obj/Banana.obj', function (loadedMesh) {
             var material = new THREE.MeshLambertMaterial({
                 color: 0xccc
             });
