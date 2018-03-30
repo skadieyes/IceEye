@@ -84,12 +84,16 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__food_food_module__ = __webpack_require__("../../../../../src/app/food/food.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__fly_game_fly_game_module__ = __webpack_require__("../../../../../src/app/fly-game/fly-game.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__resume_resume_module__ = __webpack_require__("../../../../../src/app/resume/resume.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ng_zorro_antd__ = __webpack_require__("../../../../ng-zorro-antd/esm5/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -110,7 +114,9 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_3__app_routes__["a" /* AppRoutes */],
                 __WEBPACK_IMPORTED_MODULE_5__food_food_module__["a" /* FoodModule */],
-                __WEBPACK_IMPORTED_MODULE_6__fly_game_fly_game_module__["a" /* FlyGameModule */]
+                __WEBPACK_IMPORTED_MODULE_6__fly_game_fly_game_module__["a" /* FlyGameModule */],
+                __WEBPACK_IMPORTED_MODULE_7__resume_resume_module__["a" /* ResumeModule */],
+                __WEBPACK_IMPORTED_MODULE_8_ng_zorro_antd__["a" /* NgZorroAntdModule */]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
         })
@@ -131,13 +137,16 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__food_food_component__ = __webpack_require__("../../../../../src/app/food/food.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fly_game_fly_game_component__ = __webpack_require__("../../../../../src/app/fly-game/fly-game.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resume_resume_component__ = __webpack_require__("../../../../../src/app/resume/resume.component.ts");
+
 
 
 
 var routes = [
     { path: 'food', component: __WEBPACK_IMPORTED_MODULE_1__food_food_component__["a" /* FoodComponent */] },
     { path: 'fly', component: __WEBPACK_IMPORTED_MODULE_2__fly_game_fly_game_component__["a" /* FlyGameComponent */] },
-    { path: '', redirectTo: 'food', pathMatch: 'full' },
+    { path: 'resume', component: __WEBPACK_IMPORTED_MODULE_3__resume_resume_component__["a" /* ResumeComponent */] },
+    { path: '', redirectTo: 'resume', pathMatch: 'full' },
 ];
 var AppRoutes = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routes.js.map
@@ -192,18 +201,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var FlyGameComponent = (function () {
-    function FlyGameComponent(_fly, _sea, _cloud, _sky, _airplane, _ennemy, _particle) {
+    function FlyGameComponent(_fly, _sea, _cloud, _sky, _airplane) {
         this._fly = _fly;
         this._sea = _sea;
         this._cloud = _cloud;
         this._sky = _sky;
         this._airplane = _airplane;
-        this._ennemy = _ennemy;
-        this._particle = _particle;
-        this.ennemiesPool = [];
-        this.game = this._fly.Variables;
-        this.deltaTime = 0;
-        this.particlesPool = [];
         this.mousePos = { x: 0, y: 0 };
     }
     FlyGameComponent.prototype.ngOnInit = function () {
@@ -277,86 +280,6 @@ var FlyGameComponent = (function () {
         this.gameModel.sea.receiveShadow = true;
         this.gameModel.sky = this._sky.skyMesh;
         this.gameModel.airplane = this._airplane.mesh;
-        this.gameModel.particle = this._particle.mesh;
-    };
-    FlyGameComponent.prototype.spawnEnnemies = function () {
-        var nEnnemies = this.game.level;
-        this.gameModel.ennemy = new THREE.Object3D();
-        for (var i = 0; i < nEnnemies; i++) {
-            var ennemy = {};
-            if (this.ennemiesPool.length) {
-                ennemy = this.ennemiesPool.pop();
-            }
-            else {
-                ennemy = this._ennemy.mesh;
-            }
-            var angle = -(i * 0.1);
-            var distance = this.game.seaRadius + this.game.planeDefaultHeight + (-1 + Math.random() * 2) * (this.game.planeAmpHeight - 20);
-            if (ennemy.position) {
-                ennemy.position.y = Math.random() * 10;
-                ennemy.position.x = Math.random();
-                var ennemyUse = new __WEBPACK_IMPORTED_MODULE_3__model__["e" /* EnnemyUse */](angle, distance, ennemy);
-                this.gameModel.ennemy.add(ennemy);
-                this.gameModel.ennemyUse.push(ennemyUse);
-            }
-        }
-        return this.gameModel.ennemy;
-    };
-    FlyGameComponent.prototype.rotateEnnemies = function () {
-        for (var i = 0; i < this.gameModel.ennemyUse.length; i++) {
-            var ennemy = this.gameModel.ennemyUse[i];
-            ennemy.angle += this.game.speed * this.deltaTime * this.game.ennemiesSpeed;
-            if (ennemy.angle > Math.PI * 2) {
-                ennemy.angle -= Math.PI * 2;
-            }
-            if (ennemy.mesh) {
-                ennemy.mesh.position.y = -this.game.seaRadius + Math.sin(ennemy.angle) * ennemy.distance;
-                ennemy.mesh.position.x = Math.cos(ennemy.angle) * ennemy.distance;
-                ennemy.mesh.rotation.z += Math.random() * .1;
-                ennemy.mesh.rotation.y += Math.random() * .1;
-            }
-            var diffPos = this.gameModel.airplane.position.clone().sub(ennemy.mesh.position.clone());
-            var d = diffPos.length();
-            if (d < this.game.ennemyDistanceTolerance) {
-                this.spawnParticles(ennemy.mesh.position.clone(), 15, 0xf25346, 3);
-                this.ennemiesPool.unshift(this.gameModel.ennemyUse.splice(i, 1)[0]);
-                this.gameModel.ennemy.remove(ennemy.mesh);
-                this.game.planeCollisionSpeedX = 100 * diffPos.x / d;
-                this.game.planeCollisionSpeedY = 100 * diffPos.y / d;
-                i--;
-            }
-            else if (ennemy.angle > Math.PI) {
-                this.ennemiesPool.unshift(this.gameModel.ennemiesInUse.splice(i, 1)[0]);
-                this.gameModel.remove(ennemy.mesh);
-                i--;
-            }
-        }
-    };
-    FlyGameComponent.prototype.explode = function (pos, color, scale) {
-        var _p = this.gameModel.particle.parent;
-        this.gameModel.particle.material.color = new THREE.Color(color);
-        this.gameModel.particle.material.needsUpdate = true;
-        this.gameModel.particle.scale.set(scale, scale, scale);
-        var targetX = pos.x + (-1 + Math.random() * 2) * 50;
-        var targetY = pos.y + (-1 + Math.random() * 2) * 50;
-        var speed = .6 + Math.random() * .2;
-    };
-    FlyGameComponent.prototype.spawnParticles = function (pos, density, color, scale) {
-        var nPArticles = density;
-        for (var i = 0; i < nPArticles; i++) {
-            var particle = {};
-            if (this.particlesPool.length) {
-                particle = this.particlesPool.pop();
-            }
-            else {
-                particle = this._particle.mesh;
-            }
-            this.gameModel.particle.add(particle);
-            particle.visible = true;
-            particle.position.y = pos.y;
-            particle.position.x = pos.x;
-            this.explode(pos, color, scale);
-        }
     };
     FlyGameComponent.prototype.moveWaves = function (waves) {
         if (this.gameModel.sea) {
@@ -381,24 +304,6 @@ var FlyGameComponent = (function () {
         this.gameModel.airplane.scale.set(.25, .25, .25);
         this.gameModel.airplane.position.y = 100;
         this.scene.add(this.gameModel.airplane);
-    };
-    FlyGameComponent.prototype.createEnnemies = function () {
-        var ennemys = this.spawnEnnemies();
-        for (var i = 0; i < 10; i++) {
-            var ennemy = this._ennemy.mesh;
-            this.ennemiesPool.push(ennemy);
-        }
-        var ennemiesHolder = new __WEBPACK_IMPORTED_MODULE_3__model__["c" /* EnnemiesHolder */](this.gameModel.ennemy, this.gameModel.ennemyUse);
-        console.log(ennemys);
-        this.scene.add(ennemys);
-    };
-    FlyGameComponent.prototype.createParticles = function () {
-        for (var i = 0; i < 10; i++) {
-            var particle = this._particle.mesh;
-            this.particlesPool.push(particle);
-        }
-        var particlesHolder = new __WEBPACK_IMPORTED_MODULE_3__model__["f" /* ParticleHolder */](this.gameModel.particle);
-        this.scene.add(particlesHolder.mesh);
     };
     FlyGameComponent.prototype.renderRun = function () {
         var _this = this;
@@ -434,18 +339,12 @@ var FlyGameComponent = (function () {
             selector: 'app-fly-game',
             template: __webpack_require__("../../../../../src/app/fly-game/fly-game.component.html"),
             styles: [__webpack_require__("../../../../../src/app/fly-game/fly-game.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["h" /* SeaService */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["i" /* SkyService */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["d" /* EnnemyService */],
-                __WEBPACK_IMPORTED_MODULE_3__model__["g" /* ParticleService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */], __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */], __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */], __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */], __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__model__["h" /* SeaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["h" /* SeaService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__model__["i" /* SkyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["i" /* SkyService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__model__["d" /* EnnemyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["d" /* EnnemyService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__model__["g" /* ParticleService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["g" /* ParticleService */]) === "function" && _g || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]) === "function" && _e || Object])
     ], FlyGameComponent);
     return FlyGameComponent;
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=fly-game.component.js.map
@@ -466,8 +365,6 @@ var GameModelSet = (function () {
 
 var GameModel = (function () {
     function GameModel() {
-        this.ennemyUse = [];
-        this.ennemyHolder = [];
     }
     return GameModel;
 }());
@@ -550,7 +447,7 @@ var FlyGameService = (function () {
             ratioSpeedDistance: 50,
             energy: 100,
             ratioSpeedEnergy: 3,
-            level: 10,
+            level: 1,
             levelLastUpdate: 0,
             distanceForLevelUpdate: 1000,
             planeDefaultHeight: 100,
@@ -600,7 +497,7 @@ var FlyGameService = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/fly-game/model/airplane.service.ts":
+/***/ "../../../../../src/app/fly-game/model/airplane.servive.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -784,7 +681,7 @@ var AirPlaneServive = (function () {
     return AirPlaneServive;
 }());
 
-//# sourceMappingURL=airplane.service.js.map
+//# sourceMappingURL=airplane.servive.js.map
 
 /***/ }),
 
@@ -830,144 +727,23 @@ var CloudService = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/fly-game/model/ennemy.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EnnemyService; });
-/* unused harmony export EnnemyMesh */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EnnemyUse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EnnemiesHolder; });
-var EnnemyService = (function () {
-    function EnnemyService() {
-    }
-    Object.defineProperty(EnnemyService.prototype, "mesh", {
-        get: function () {
-            var geom = new THREE.TetrahedronGeometry(8, 2);
-            var mat = new THREE.MeshPhongMaterial({
-                color: 0xf25346,
-                shininess: 0,
-                specular: 0xffffff,
-                shading: THREE.FlatShading
-            });
-            var mesh = new THREE.Mesh(geom, mat);
-            mesh.castShadow = true;
-            var angle = 0;
-            var dist = 0;
-            return mesh;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return EnnemyService;
-}());
-
-var EnnemyMesh = (function () {
-    function EnnemyMesh() {
-        this.geom = new THREE.TetrahedronGeometry(8, 2);
-        this.mat = new THREE.MeshPhongMaterial({
-            color: 0xf25346,
-            shininess: 0,
-            specular: 0xffffff,
-            shading: THREE.FlatShading
-        });
-        this.mesh = new THREE.Mesh(this.geom, this.mat);
-        this.angle = 0;
-        this.dist = 0;
-    }
-    return EnnemyMesh;
-}());
-
-var EnnemyUse = (function () {
-    function EnnemyUse(angle, dist, mesh) {
-        this.angle = 0;
-        this.dist = 0;
-        this.angle = angle;
-        this.dist = dist;
-        this.mesh = mesh;
-    }
-    return EnnemyUse;
-}());
-
-var EnnemiesHolder = (function () {
-    function EnnemiesHolder(mesh, ennemiesInUse) {
-        this.mesh = new THREE.Object3D();
-        this.ennemiesInUse = [];
-        this.mesh = mesh;
-        this.ennemiesInUse = ennemiesInUse;
-    }
-    return EnnemiesHolder;
-}());
-
-//# sourceMappingURL=ennemy.service.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/fly-game/model/index.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__particle_service__ = __webpack_require__("../../../../../src/app/fly-game/model/particle.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_0__particle_service__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__particle_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ennemy_service__ = __webpack_require__("../../../../../src/app/fly-game/model/ennemy.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__ennemy_service__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__ennemy_service__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__ennemy_service__["a"]; });
-/* unused harmony reexport EnnemyMesh */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__airplane_service__ = __webpack_require__("../../../../../src/app/fly-game/model/airplane.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__airplane_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sky_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sky.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_3__sky_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sea_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sea.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_4__sea_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cloud_service__ = __webpack_require__("../../../../../src/app/fly-game/model/cloud.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__cloud_service__["a"]; });
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__airplane_servive__ = __webpack_require__("../../../../../src/app/fly-game/model/airplane.servive.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__airplane_servive__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sky_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sky.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__sky_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sea_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sea.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__sea_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cloud_service__ = __webpack_require__("../../../../../src/app/fly-game/model/cloud.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__cloud_service__["a"]; });
 
 
 
 
 //# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/fly-game/model/particle.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ParticleService; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ParticleHolder; });
-var ParticleService = (function () {
-    function ParticleService() {
-    }
-    Object.defineProperty(ParticleService.prototype, "mesh", {
-        get: function () {
-            var geom = new THREE.TetrahedronGeometry(3, 0);
-            var mat = new THREE.MeshPhongMaterial({
-                color: 0x009999,
-                shininess: 0,
-                specular: 0xffffff,
-                shading: THREE.FlatShading
-            });
-            var mesh = new THREE.Mesh(geom, mat);
-            return mesh;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ParticleService;
-}());
-
-var ParticleHolder = (function () {
-    function ParticleHolder(mesh) {
-        this.mesh = mesh;
-    }
-    return ParticleHolder;
-}());
-
-//# sourceMappingURL=particle.service.js.map
 
 /***/ }),
 
@@ -1150,7 +926,6 @@ var FoodComponent = (function () {
     }
     FoodComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.initStats();
         this.sceneSet();
         this.cameraSet();
         this.rendererSet();
@@ -1162,12 +937,12 @@ var FoodComponent = (function () {
         document.getElementById('webgl').appendChild(this.renderer.domElement);
         var texture = new THREE.Texture();
         var loader2 = new THREE.ImageLoader();
-        loader2.load('assets/textures/Banana.png', function (image) {
+        loader2.load('./../../assets/textures/Banana.png', function (image) {
             texture.image = image;
             texture.needsUpdate = true;
         });
         var loader = new THREE.OBJLoader();
-        loader.load('assets/obj/Banana.obj', function (loadedMesh) {
+        loader.load('./../../assets/obj/Banana.obj', function (loadedMesh) {
             console.log(loadedMesh);
             var material = new THREE.MeshLambertMaterial({
                 color: 0xccc
@@ -1262,7 +1037,6 @@ var FoodComponent = (function () {
         var _this = this;
         this.renderer.render(this.scene, this.camera);
         this.render = function () {
-            _this.stats.update();
             window.requestAnimationFrame(_this.render);
             _this.scene.traverse(function (e) {
                 if (e instanceof THREE.Mesh && e !== _this.plane) {
@@ -1286,7 +1060,7 @@ var FoodComponent = (function () {
     };
     FoodComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
-            selector: 'app-food',
+            selector: 'eyes-food',
             template: __webpack_require__("../../../../../src/app/food/food.component.html"),
             styles: [__webpack_require__("../../../../../src/app/food/food.component.scss")]
         }),
@@ -1349,6 +1123,450 @@ var FoodModule = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/resume/resume.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"resume-body\">\n\n    <div class=\"person-info\">\n        <div class=\"head\">\n            <img class=\"head-img\" src=\"assets/picture/head.jpg\">\n        </div>\n        <div class=\"title\">\n            郑染秋\n        </div>\n        <div class=\"info\">\n            前端开发工程师\n        </div>\n        <div class=\"info\">\n            FIS Global（中国）前端开发工程师\n        </div>\n        <div class=\"info\">\n            <i class=\"info-icon fa fa-envelope-o\"></i>foam923@live.cn\n            <br>\n            <i class=\"info-icon fa fa-phone\"></i> 15921461671\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-tech\">\n    <div class=\"tech-info\">\n        <div class=\"title\">\n            技术栈\n        </div>\n        <div class=\"tech-chart\">\n            <div class=\"tech-chart\" #techChart>\n\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-life\">\n    <div class=\"title\">\n        人生经历\n    </div>\n    <div class=\"timeline\">\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-success\">\n                <i class=\"fa fa-home\"></i>\n            </span>\n            <span class=\"line-label\">西安电子科技大学 通信工程 本科\n                <span class=\"line-year\"> 2012 - 2016</span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-success\">\n                <i class=\"fa fa-briefcase\"></i>\n            </span>\n            <span class=\"line-label\">FIS 前端开发工程师\n                <span class=\"line-year\"> 2016 - 2018 </span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-info\">\n                <i class=\"fa fa-send-o\"></i>\n            </span>\n            <span class=\"line-label\">...\n                <span class=\"line-year\"> develop </span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-danger\">\n                <i class=\"fa fa-bullseye\"></i>\n            </span>\n            <span class=\"line-label\">前端 移动端 小程序 webvr/ar 架构\n                <span class=\"line-year\"> future </span>\n            </span>\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-project\">\n    <div class=\"title\">\n        项目经历\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view\">\n            <div class=\"view-thumbnail\">\n                <div class=\"data-view\" #dataView>\n\n                </div>\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">数据可视化配置系统</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                从数据->图表->界面的可视化配置工具，可以高效快速的定制一个数据可视化应用，零代码量\n                <br>\n                <br> 使用Angular + Echarts + Node.js构建\n                <br>\n            </div>\n        </div>\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view ui-thumbnail\">\n            <div class=\"view-thumbnail\">\n                <div class=\"ui-view\" #uiView>\n\n                </div>\n\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">UI组件库/模版库</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                一套前端界面解决方案，从原子级的组件->组装成常用模式->应用模版，既能够进行原子级\n                <br>别的开发，也能够利用应用模版快速构建项目\n                <br>\n                <br> 基于Angular开发\n                <br>\n            </div>\n        </div>\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view\">\n            <div class=\"view-thumbnail\" id=\"banana\">\n\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">three.js应用</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                模块化的来开发一个three.js的飞行小游戏，后续还会在这个项目中进行webvr小应用的尝试\n                <br>\n                <br> 使用Angular + three.js 来开发\n                <br>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"resume-body end-body\">\n    <div class=\"title\">\n        THANKS\n    </div>\n    <div class=\"tag-box\">\n        <div class=\"row\">\n            <div class=\"people-tag lg green\">\n                爱技术\n            </div>\n            <div class=\"people-tag sm pink\">\n                新鲜事物\n            </div>\n            <div class=\"people-tag\">\n                喜欢钻研\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag purple\">\n                学习速度快\n            </div>\n            <div class=\"people-tag lg red\">\n                成长\n            </div>\n            <div class=\"people-tag sm orange\">\n                有猫\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag red\">\n                喜欢游戏\n            </div>\n            <div class=\"people-tag\">\n                追求美\n            </div>\n            <div class=\"people-tag lg pink\">\n                动手主义\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag orange\">\n                热爱思考\n            </div>\n            <div class=\"people-tag green lg\">\n                爱折腾\n            </div>\n            <div class=\"people-tag sm purple\">\n                有计划\n            </div>\n        </div>\n    </div>\n    <div class=\"contact-info-box\">\n\n        <div class=\"info\">\n            <i class=\"info-icon fa fa-envelope-o\"></i> foam923@live.cn\n\n            <i class=\"info-icon fa fa-phone\"></i> 15921461671\n        </div>\n    </div>\n    <div class=\"motto\">生命在于折腾</div>\n    <div class=\"hope\">希望明天能够和你一起努力 </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/resume/resume.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".resume-body {\n  height: 100%;\n  width: 100%;\n  background-color: gold; }\n  .resume-body .person-info {\n    position: relative;\n    top: 50%;\n    -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n    .resume-body .person-info .head .head-img {\n      border-radius: 50%; }\n    .resume-body .person-info .title {\n      font-size: 36px;\n      line-height: 46px;\n      padding: 20px 5px 5px 5px;\n      opacity: 0.9; }\n    .resume-body .person-info .info {\n      font-size: 14px;\n      padding: 2px;\n      opacity: 0.9; }\n      .resume-body .person-info .info .info-icon {\n        padding-right: 5px; }\n\n.resume-tech {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: white; }\n  .resume-tech .tech-info {\n    height: 100%; }\n    .resume-tech .tech-info .title {\n      font-size: 36px;\n      line-height: 46px;\n      padding: 30px;\n      opacity: 0.8; }\n    .resume-tech .tech-info .tech-chart {\n      width: 100%;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      height: calc(100% - 106px);\n      background-color: #333333; }\n      .resume-tech .tech-info .tech-chart .tech-chart {\n        height: 100%;\n        width: 100%; }\n\n.resume-life {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: rgba(255, 255, 255, 0.8); }\n  .resume-life .title {\n    font-size: 36px;\n    line-height: 46px;\n    height: 8%;\n    opacity: 0.9;\n    padding: 30px 0; }\n  .resume-life .timeline {\n    position: relative;\n    left: 50%;\n    -webkit-transform: translateX(-40%) translateY(-50%);\n            transform: translateX(-40%) translateY(-50%);\n    top: 50%;\n    height: 400px;\n    width: 450px;\n    padding: 0 15px 15px; }\n    .resume-life .timeline .line-child {\n      font-size: 16px;\n      line-height: 24px;\n      padding: 15px 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex; }\n      .resume-life .timeline .line-child .line-icon {\n        font-size: 48px; }\n      .resume-life .timeline .line-child .icon-success {\n        color: #79b962; }\n      .resume-life .timeline .line-child .icon-info {\n        color: #5a7b94; }\n      .resume-life .timeline .line-child .icon-danger {\n        color: #d68e8e; }\n      .resume-life .timeline .line-child .line-label {\n        padding-left: 15px;\n        padding-top: 12px; }\n        .resume-life .timeline .line-child .line-label .line-year {\n          padding-left: 5px; }\n\n.resume-project {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: rgba(255, 255, 255, 0.8); }\n  .resume-project .title {\n    font-size: 36px;\n    line-height: 46px;\n    height: 8%;\n    opacity: 0.9;\n    padding: 0px 0 100px 0; }\n  .resume-project .project {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    width: 100%;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n    .resume-project .project .project-view {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: vertical;\n      -webkit-box-direction: normal;\n          -ms-flex-direction: column;\n              flex-direction: column;\n      width: 20%;\n      position: relative;\n      top: -35px; }\n      .resume-project .project .project-view .view-thumbnail {\n        height: 200px;\n        width: 100%; }\n        .resume-project .project .project-view .view-thumbnail .data-view, .resume-project .project .project-view .view-thumbnail .ui-view {\n          width: 100%;\n          height: 100%; }\n    .resume-project .project .ui-thumbnail {\n      top: -50px; }\n  .resume-project .project-label {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding: 0 15px; }\n    .resume-project .project-label .project-title {\n      font-size: 20px;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center; }\n      .resume-project .project-label .project-title .title-label {\n        position: relative; }\n      .resume-project .project-label .project-title .view-icon {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        font-size: 24px;\n        padding-left: 5px; }\n        .resume-project .project-label .project-title .view-icon .view-online {\n          padding: 10px;\n          cursor: pointer; }\n        .resume-project .project-label .project-title .view-icon .view-github {\n          padding: 10px;\n          cursor: pointer; }\n    .resume-project .project-label .project-content {\n      padding-top: 10px;\n      font-size: 14px;\n      text-align: left; }\n\n.resume-body .title {\n  font-size: 36px;\n  line-height: 46px;\n  padding: 30px 0 60px 0; }\n\n.resume-body .motto {\n  font-size: 14px; }\n\n.resume-body .hope {\n  font-size: 14px; }\n\n.resume-body .contact-info-box .title {\n  font-size: 16px;\n  line-height: 22px; }\n\n.resume-body .contact-info-box .head .head-img {\n  border-radius: 50%; }\n\n.resume-body .contact-info-box .info {\n  padding: 5px;\n  font-size: 18px;\n  padding: 50px;\n  text-align: left;\n  display: inline-block; }\n  .resume-body .contact-info-box .info .info-icon {\n    font-size: 22px;\n    padding: 0 5px; }\n\n.resume-body .tag-box {\n  padding-top: 30px;\n  color: rgba(255, 255, 255, 0.8);\n  position: relative; }\n  .resume-body .tag-box .row {\n    padding: 5px 0; }\n  .resume-body .tag-box .people-tag {\n    padding: 10px;\n    border-radius: 4px;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    padding: 10px;\n    background-color: #0e98da;\n    font-size: 16px;\n    margin: 0 5px; }\n  .resume-body .tag-box .lg {\n    font-size: 22px; }\n  .resume-body .tag-box .sm {\n    font-size: 14px; }\n  .resume-body .tag-box .green {\n    background: #4abd4a; }\n  .resume-body .tag-box .pink {\n    background: #e2929e; }\n  .resume-body .tag-box .red {\n    background: #f35c5a; }\n  .resume-body .tag-box .purple {\n    background: #a754a7; }\n  .resume-body .tag-box .orange {\n    background: #dea02f; }\n\n.end-body {\n  color: rgba(255, 255, 255, 0.8);\n  background: #333333; }\n\n.ant-timeline-item-content {\n  font-size: 16px; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/resume/resume.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResumeComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_echarts__ = __webpack_require__("../../../../echarts/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_echarts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resume_service__ = __webpack_require__("../../../../../src/app/resume/resume.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ResumeComponent = (function () {
+    function ResumeComponent(_el, _render, _resume) {
+        this._el = _el;
+        this._render = _render;
+        this._resume = _resume;
+    }
+    ResumeComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var chart = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.techChart.nativeElement, 'dark');
+        var techData = this._resume.techTree;
+        chart.setOption(techData);
+        var chartDataView = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.dataView.nativeElement, 'dark');
+        var dataViewData = this._resume.dataView;
+        chartDataView.setOption(dataViewData);
+        var chartUiView = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.uiView.nativeElement, 'dark');
+        var uiViewData = this._resume.uiView;
+        chartUiView.setOption(uiViewData);
+        var texture = new THREE.Texture();
+        var loader2 = new THREE.ImageLoader();
+        loader2.load('./../../assets/textures/Banana.png', function (image) {
+            texture.image = image;
+            texture.needsUpdate = true;
+        });
+        var loader = new THREE.OBJLoader();
+        loader.load('./../../assets/obj/Banana.obj', function (loadedMesh) {
+            var material = new THREE.MeshLambertMaterial({
+                color: 0xccc
+            });
+            loadedMesh.children.forEach(function (child) {
+                child.material.map = texture;
+                child.geometry.computeFaceNormals();
+                child.geometry.computeVertexNormals();
+            });
+            loadedMesh.scale.set(150, 150, 150);
+            loadedMesh.rotation.x = -0.3;
+            _this.scene.add(loadedMesh);
+        });
+        this.sceneSet();
+        this.cameraSet();
+        this.rendererSet();
+        this.lightSet();
+        this.renderRun();
+        document.getElementById('banana').appendChild(this.renderer.domElement);
+    };
+    ResumeComponent.prototype.ngAfterViewInit = function () {
+    };
+    ResumeComponent.prototype.bodyInit = function () {
+        var el = document.getElementsByClassName('resume-body');
+        if (el.length > 0) {
+            for (var i = 0; i < el.length; i++) {
+                this._render.setStyle(el[i], 'height', window.innerHeight + 'px');
+            }
+        }
+    };
+    ResumeComponent.prototype.sceneSet = function () {
+        this.scene = new THREE.Scene();
+    };
+    ResumeComponent.prototype.cameraSet = function () {
+        this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        this.camera.position.x = -30;
+        this.camera.position.y = 40;
+        this.camera.position.z = 30;
+        this.camera.lookAt(this.scene.position);
+    };
+    ResumeComponent.prototype.rendererSet = function () {
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setClearColor(new THREE.Color('#333333'));
+        this.renderer.setSize(200, 200);
+        this.renderer.shadowMapEnabled = true;
+    };
+    ResumeComponent.prototype.lightSet = function () {
+        var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+        this.scene.add(ambientLight);
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-40, 60, 20);
+        spotLight.castShadow = true;
+        this.scene.add(spotLight);
+    };
+    ResumeComponent.prototype.renderRun = function () {
+        var _this = this;
+        this.renderer.render(this.scene, this.camera);
+        this.render = function () {
+            window.requestAnimationFrame(_this.render);
+            _this.scene.traverse(function (e) {
+                if (e instanceof THREE.Mesh && e !== _this.plane) {
+                    e.rotation.x += 0.03;
+                    e.rotation.y += 0.03;
+                    e.rotation.z += 0.03;
+                }
+            });
+            _this.renderer.render(_this.scene, _this.camera);
+        };
+        window.requestAnimationFrame(this.render);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('techChart'),
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _a || Object)
+    ], ResumeComponent.prototype, "techChart", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('dataView'),
+        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _b || Object)
+    ], ResumeComponent.prototype, "dataView", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('uiView'),
+        __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _c || Object)
+    ], ResumeComponent.prototype, "uiView", void 0);
+    ResumeComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+            selector: 'app-resume',
+            template: __webpack_require__("../../../../../src/app/resume/resume.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/resume/resume.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */]]
+        }),
+        __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Renderer2 */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */]) === "function" && _f || Object])
+    ], ResumeComponent);
+    return ResumeComponent;
+    var _a, _b, _c, _d, _e, _f;
+}());
+
+//# sourceMappingURL=resume.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/resume/resume.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResumeModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resume_component__ = __webpack_require__("../../../../../src/app/resume/resume.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var ResumeModule = (function () {
+    function ResumeModule() {
+    }
+    ResumeModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */]
+            ],
+            declarations: [__WEBPACK_IMPORTED_MODULE_2__resume_component__["a" /* ResumeComponent */]]
+        })
+    ], ResumeModule);
+    return ResumeModule;
+}());
+
+//# sourceMappingURL=resume.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/resume/resume.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResumeService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var ResumeService = (function () {
+    function ResumeService() {
+        this.techTree = {
+            series: [{
+                    type: 'treemap',
+                    name: '技术栈',
+                    data: [
+                        {
+                            name: 'Angular',
+                            value: 20,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Sass',
+                            value: 20,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Typescript',
+                            value: 20,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'HTML5',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Node.js',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'three.js',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'WebGL',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'CSS',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Javascript',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Design',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        },
+                        {
+                            name: 'Animate',
+                            value: 10,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        fontSize: 16,
+                                        color: '#333333',
+                                        fontWeight: 'normal'
+                                    },
+                                }
+                            }
+                        }
+                    ]
+                }]
+        };
+        this.dataView = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                    data: [6, 8, 5, 3, 2, 6, 7],
+                    type: 'bar'
+                }]
+        };
+        this.uiView = {
+            series: [
+                {
+                    name: '漏斗图',
+                    type: 'funnel',
+                    left: '10%',
+                    top: 60,
+                    bottom: 60,
+                    width: '80%',
+                    height: '70%',
+                    min: 60,
+                    max: 0,
+                    minSize: '0%',
+                    maxSize: '100%',
+                    sort: 'descending',
+                    gap: 2,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        emphasis: {
+                            textStyle: {
+                                fontSize: 20
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            length: 10,
+                            lineStyle: {
+                                width: 1,
+                                type: 'solid'
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }
+                    },
+                    data: [
+                        { value: 60, name: '模版' },
+                        { value: 40, name: '模式' },
+                        { value: 20, name: '组件' }
+                    ]
+                }
+            ]
+        };
+    }
+    ResumeService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])()
+    ], ResumeService);
+    return ResumeService;
+}());
+
+//# sourceMappingURL=resume.service.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/environments/environment.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1379,6 +1597,265 @@ if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment *
 }
 Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */]);
 //# sourceMappingURL=main.js.map
+
+/***/ }),
+
+/***/ "../../../../moment/locale recursive ^\\.\\/.*$":
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": "../../../../moment/locale/af.js",
+	"./af.js": "../../../../moment/locale/af.js",
+	"./ar": "../../../../moment/locale/ar.js",
+	"./ar-dz": "../../../../moment/locale/ar-dz.js",
+	"./ar-dz.js": "../../../../moment/locale/ar-dz.js",
+	"./ar-kw": "../../../../moment/locale/ar-kw.js",
+	"./ar-kw.js": "../../../../moment/locale/ar-kw.js",
+	"./ar-ly": "../../../../moment/locale/ar-ly.js",
+	"./ar-ly.js": "../../../../moment/locale/ar-ly.js",
+	"./ar-ma": "../../../../moment/locale/ar-ma.js",
+	"./ar-ma.js": "../../../../moment/locale/ar-ma.js",
+	"./ar-sa": "../../../../moment/locale/ar-sa.js",
+	"./ar-sa.js": "../../../../moment/locale/ar-sa.js",
+	"./ar-tn": "../../../../moment/locale/ar-tn.js",
+	"./ar-tn.js": "../../../../moment/locale/ar-tn.js",
+	"./ar.js": "../../../../moment/locale/ar.js",
+	"./az": "../../../../moment/locale/az.js",
+	"./az.js": "../../../../moment/locale/az.js",
+	"./be": "../../../../moment/locale/be.js",
+	"./be.js": "../../../../moment/locale/be.js",
+	"./bg": "../../../../moment/locale/bg.js",
+	"./bg.js": "../../../../moment/locale/bg.js",
+	"./bm": "../../../../moment/locale/bm.js",
+	"./bm.js": "../../../../moment/locale/bm.js",
+	"./bn": "../../../../moment/locale/bn.js",
+	"./bn.js": "../../../../moment/locale/bn.js",
+	"./bo": "../../../../moment/locale/bo.js",
+	"./bo.js": "../../../../moment/locale/bo.js",
+	"./br": "../../../../moment/locale/br.js",
+	"./br.js": "../../../../moment/locale/br.js",
+	"./bs": "../../../../moment/locale/bs.js",
+	"./bs.js": "../../../../moment/locale/bs.js",
+	"./ca": "../../../../moment/locale/ca.js",
+	"./ca.js": "../../../../moment/locale/ca.js",
+	"./cs": "../../../../moment/locale/cs.js",
+	"./cs.js": "../../../../moment/locale/cs.js",
+	"./cv": "../../../../moment/locale/cv.js",
+	"./cv.js": "../../../../moment/locale/cv.js",
+	"./cy": "../../../../moment/locale/cy.js",
+	"./cy.js": "../../../../moment/locale/cy.js",
+	"./da": "../../../../moment/locale/da.js",
+	"./da.js": "../../../../moment/locale/da.js",
+	"./de": "../../../../moment/locale/de.js",
+	"./de-at": "../../../../moment/locale/de-at.js",
+	"./de-at.js": "../../../../moment/locale/de-at.js",
+	"./de-ch": "../../../../moment/locale/de-ch.js",
+	"./de-ch.js": "../../../../moment/locale/de-ch.js",
+	"./de.js": "../../../../moment/locale/de.js",
+	"./dv": "../../../../moment/locale/dv.js",
+	"./dv.js": "../../../../moment/locale/dv.js",
+	"./el": "../../../../moment/locale/el.js",
+	"./el.js": "../../../../moment/locale/el.js",
+	"./en-au": "../../../../moment/locale/en-au.js",
+	"./en-au.js": "../../../../moment/locale/en-au.js",
+	"./en-ca": "../../../../moment/locale/en-ca.js",
+	"./en-ca.js": "../../../../moment/locale/en-ca.js",
+	"./en-gb": "../../../../moment/locale/en-gb.js",
+	"./en-gb.js": "../../../../moment/locale/en-gb.js",
+	"./en-ie": "../../../../moment/locale/en-ie.js",
+	"./en-ie.js": "../../../../moment/locale/en-ie.js",
+	"./en-nz": "../../../../moment/locale/en-nz.js",
+	"./en-nz.js": "../../../../moment/locale/en-nz.js",
+	"./eo": "../../../../moment/locale/eo.js",
+	"./eo.js": "../../../../moment/locale/eo.js",
+	"./es": "../../../../moment/locale/es.js",
+	"./es-do": "../../../../moment/locale/es-do.js",
+	"./es-do.js": "../../../../moment/locale/es-do.js",
+	"./es-us": "../../../../moment/locale/es-us.js",
+	"./es-us.js": "../../../../moment/locale/es-us.js",
+	"./es.js": "../../../../moment/locale/es.js",
+	"./et": "../../../../moment/locale/et.js",
+	"./et.js": "../../../../moment/locale/et.js",
+	"./eu": "../../../../moment/locale/eu.js",
+	"./eu.js": "../../../../moment/locale/eu.js",
+	"./fa": "../../../../moment/locale/fa.js",
+	"./fa.js": "../../../../moment/locale/fa.js",
+	"./fi": "../../../../moment/locale/fi.js",
+	"./fi.js": "../../../../moment/locale/fi.js",
+	"./fo": "../../../../moment/locale/fo.js",
+	"./fo.js": "../../../../moment/locale/fo.js",
+	"./fr": "../../../../moment/locale/fr.js",
+	"./fr-ca": "../../../../moment/locale/fr-ca.js",
+	"./fr-ca.js": "../../../../moment/locale/fr-ca.js",
+	"./fr-ch": "../../../../moment/locale/fr-ch.js",
+	"./fr-ch.js": "../../../../moment/locale/fr-ch.js",
+	"./fr.js": "../../../../moment/locale/fr.js",
+	"./fy": "../../../../moment/locale/fy.js",
+	"./fy.js": "../../../../moment/locale/fy.js",
+	"./gd": "../../../../moment/locale/gd.js",
+	"./gd.js": "../../../../moment/locale/gd.js",
+	"./gl": "../../../../moment/locale/gl.js",
+	"./gl.js": "../../../../moment/locale/gl.js",
+	"./gom-latn": "../../../../moment/locale/gom-latn.js",
+	"./gom-latn.js": "../../../../moment/locale/gom-latn.js",
+	"./gu": "../../../../moment/locale/gu.js",
+	"./gu.js": "../../../../moment/locale/gu.js",
+	"./he": "../../../../moment/locale/he.js",
+	"./he.js": "../../../../moment/locale/he.js",
+	"./hi": "../../../../moment/locale/hi.js",
+	"./hi.js": "../../../../moment/locale/hi.js",
+	"./hr": "../../../../moment/locale/hr.js",
+	"./hr.js": "../../../../moment/locale/hr.js",
+	"./hu": "../../../../moment/locale/hu.js",
+	"./hu.js": "../../../../moment/locale/hu.js",
+	"./hy-am": "../../../../moment/locale/hy-am.js",
+	"./hy-am.js": "../../../../moment/locale/hy-am.js",
+	"./id": "../../../../moment/locale/id.js",
+	"./id.js": "../../../../moment/locale/id.js",
+	"./is": "../../../../moment/locale/is.js",
+	"./is.js": "../../../../moment/locale/is.js",
+	"./it": "../../../../moment/locale/it.js",
+	"./it.js": "../../../../moment/locale/it.js",
+	"./ja": "../../../../moment/locale/ja.js",
+	"./ja.js": "../../../../moment/locale/ja.js",
+	"./jv": "../../../../moment/locale/jv.js",
+	"./jv.js": "../../../../moment/locale/jv.js",
+	"./ka": "../../../../moment/locale/ka.js",
+	"./ka.js": "../../../../moment/locale/ka.js",
+	"./kk": "../../../../moment/locale/kk.js",
+	"./kk.js": "../../../../moment/locale/kk.js",
+	"./km": "../../../../moment/locale/km.js",
+	"./km.js": "../../../../moment/locale/km.js",
+	"./kn": "../../../../moment/locale/kn.js",
+	"./kn.js": "../../../../moment/locale/kn.js",
+	"./ko": "../../../../moment/locale/ko.js",
+	"./ko.js": "../../../../moment/locale/ko.js",
+	"./ky": "../../../../moment/locale/ky.js",
+	"./ky.js": "../../../../moment/locale/ky.js",
+	"./lb": "../../../../moment/locale/lb.js",
+	"./lb.js": "../../../../moment/locale/lb.js",
+	"./lo": "../../../../moment/locale/lo.js",
+	"./lo.js": "../../../../moment/locale/lo.js",
+	"./lt": "../../../../moment/locale/lt.js",
+	"./lt.js": "../../../../moment/locale/lt.js",
+	"./lv": "../../../../moment/locale/lv.js",
+	"./lv.js": "../../../../moment/locale/lv.js",
+	"./me": "../../../../moment/locale/me.js",
+	"./me.js": "../../../../moment/locale/me.js",
+	"./mi": "../../../../moment/locale/mi.js",
+	"./mi.js": "../../../../moment/locale/mi.js",
+	"./mk": "../../../../moment/locale/mk.js",
+	"./mk.js": "../../../../moment/locale/mk.js",
+	"./ml": "../../../../moment/locale/ml.js",
+	"./ml.js": "../../../../moment/locale/ml.js",
+	"./mr": "../../../../moment/locale/mr.js",
+	"./mr.js": "../../../../moment/locale/mr.js",
+	"./ms": "../../../../moment/locale/ms.js",
+	"./ms-my": "../../../../moment/locale/ms-my.js",
+	"./ms-my.js": "../../../../moment/locale/ms-my.js",
+	"./ms.js": "../../../../moment/locale/ms.js",
+	"./my": "../../../../moment/locale/my.js",
+	"./my.js": "../../../../moment/locale/my.js",
+	"./nb": "../../../../moment/locale/nb.js",
+	"./nb.js": "../../../../moment/locale/nb.js",
+	"./ne": "../../../../moment/locale/ne.js",
+	"./ne.js": "../../../../moment/locale/ne.js",
+	"./nl": "../../../../moment/locale/nl.js",
+	"./nl-be": "../../../../moment/locale/nl-be.js",
+	"./nl-be.js": "../../../../moment/locale/nl-be.js",
+	"./nl.js": "../../../../moment/locale/nl.js",
+	"./nn": "../../../../moment/locale/nn.js",
+	"./nn.js": "../../../../moment/locale/nn.js",
+	"./pa-in": "../../../../moment/locale/pa-in.js",
+	"./pa-in.js": "../../../../moment/locale/pa-in.js",
+	"./pl": "../../../../moment/locale/pl.js",
+	"./pl.js": "../../../../moment/locale/pl.js",
+	"./pt": "../../../../moment/locale/pt.js",
+	"./pt-br": "../../../../moment/locale/pt-br.js",
+	"./pt-br.js": "../../../../moment/locale/pt-br.js",
+	"./pt.js": "../../../../moment/locale/pt.js",
+	"./ro": "../../../../moment/locale/ro.js",
+	"./ro.js": "../../../../moment/locale/ro.js",
+	"./ru": "../../../../moment/locale/ru.js",
+	"./ru.js": "../../../../moment/locale/ru.js",
+	"./sd": "../../../../moment/locale/sd.js",
+	"./sd.js": "../../../../moment/locale/sd.js",
+	"./se": "../../../../moment/locale/se.js",
+	"./se.js": "../../../../moment/locale/se.js",
+	"./si": "../../../../moment/locale/si.js",
+	"./si.js": "../../../../moment/locale/si.js",
+	"./sk": "../../../../moment/locale/sk.js",
+	"./sk.js": "../../../../moment/locale/sk.js",
+	"./sl": "../../../../moment/locale/sl.js",
+	"./sl.js": "../../../../moment/locale/sl.js",
+	"./sq": "../../../../moment/locale/sq.js",
+	"./sq.js": "../../../../moment/locale/sq.js",
+	"./sr": "../../../../moment/locale/sr.js",
+	"./sr-cyrl": "../../../../moment/locale/sr-cyrl.js",
+	"./sr-cyrl.js": "../../../../moment/locale/sr-cyrl.js",
+	"./sr.js": "../../../../moment/locale/sr.js",
+	"./ss": "../../../../moment/locale/ss.js",
+	"./ss.js": "../../../../moment/locale/ss.js",
+	"./sv": "../../../../moment/locale/sv.js",
+	"./sv.js": "../../../../moment/locale/sv.js",
+	"./sw": "../../../../moment/locale/sw.js",
+	"./sw.js": "../../../../moment/locale/sw.js",
+	"./ta": "../../../../moment/locale/ta.js",
+	"./ta.js": "../../../../moment/locale/ta.js",
+	"./te": "../../../../moment/locale/te.js",
+	"./te.js": "../../../../moment/locale/te.js",
+	"./tet": "../../../../moment/locale/tet.js",
+	"./tet.js": "../../../../moment/locale/tet.js",
+	"./th": "../../../../moment/locale/th.js",
+	"./th.js": "../../../../moment/locale/th.js",
+	"./tl-ph": "../../../../moment/locale/tl-ph.js",
+	"./tl-ph.js": "../../../../moment/locale/tl-ph.js",
+	"./tlh": "../../../../moment/locale/tlh.js",
+	"./tlh.js": "../../../../moment/locale/tlh.js",
+	"./tr": "../../../../moment/locale/tr.js",
+	"./tr.js": "../../../../moment/locale/tr.js",
+	"./tzl": "../../../../moment/locale/tzl.js",
+	"./tzl.js": "../../../../moment/locale/tzl.js",
+	"./tzm": "../../../../moment/locale/tzm.js",
+	"./tzm-latn": "../../../../moment/locale/tzm-latn.js",
+	"./tzm-latn.js": "../../../../moment/locale/tzm-latn.js",
+	"./tzm.js": "../../../../moment/locale/tzm.js",
+	"./uk": "../../../../moment/locale/uk.js",
+	"./uk.js": "../../../../moment/locale/uk.js",
+	"./ur": "../../../../moment/locale/ur.js",
+	"./ur.js": "../../../../moment/locale/ur.js",
+	"./uz": "../../../../moment/locale/uz.js",
+	"./uz-latn": "../../../../moment/locale/uz-latn.js",
+	"./uz-latn.js": "../../../../moment/locale/uz-latn.js",
+	"./uz.js": "../../../../moment/locale/uz.js",
+	"./vi": "../../../../moment/locale/vi.js",
+	"./vi.js": "../../../../moment/locale/vi.js",
+	"./x-pseudo": "../../../../moment/locale/x-pseudo.js",
+	"./x-pseudo.js": "../../../../moment/locale/x-pseudo.js",
+	"./yo": "../../../../moment/locale/yo.js",
+	"./yo.js": "../../../../moment/locale/yo.js",
+	"./zh-cn": "../../../../moment/locale/zh-cn.js",
+	"./zh-cn.js": "../../../../moment/locale/zh-cn.js",
+	"./zh-hk": "../../../../moment/locale/zh-hk.js",
+	"./zh-hk.js": "../../../../moment/locale/zh-hk.js",
+	"./zh-tw": "../../../../moment/locale/zh-tw.js",
+	"./zh-tw.js": "../../../../moment/locale/zh-tw.js"
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "../../../../moment/locale recursive ^\\.\\/.*$";
 
 /***/ }),
 
