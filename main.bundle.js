@@ -201,12 +201,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var FlyGameComponent = (function () {
-    function FlyGameComponent(_fly, _sea, _cloud, _sky, _airplane) {
+    function FlyGameComponent(_fly, _sea, _cloud, _sky, _airplane, _game) {
         this._fly = _fly;
         this._sea = _sea;
         this._cloud = _cloud;
         this._sky = _sky;
         this._airplane = _airplane;
+        this._game = _game;
+        this.ennemiesPool = [];
         this.mousePos = { x: 0, y: 0 };
     }
     FlyGameComponent.prototype.ngOnInit = function () {
@@ -339,12 +341,12 @@ var FlyGameComponent = (function () {
             selector: 'app-fly-game',
             template: __webpack_require__("../../../../../src/app/fly-game/fly-game.component.html"),
             styles: [__webpack_require__("../../../../../src/app/fly-game/fly-game.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */], __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */], __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */], __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */], __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */], __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */], __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */], __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */], __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */], __WEBPACK_IMPORTED_MODULE_2__fly_game_model__["c" /* GameVariables */]]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__fly_game_service__["a" /* FlyGameService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["c" /* SeaService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["b" /* CloudService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["d" /* SkyService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__model__["a" /* AirPlaneServive */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__fly_game_model__["c" /* GameVariables */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__fly_game_model__["c" /* GameVariables */]) === "function" && _f || Object])
     ], FlyGameComponent);
     return FlyGameComponent;
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=fly-game.component.js.map
@@ -357,6 +359,7 @@ var FlyGameComponent = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return GameModelSet; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GameModel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return GameVariables; });
 var GameModelSet = (function () {
     function GameModelSet() {
     }
@@ -367,6 +370,12 @@ var GameModel = (function () {
     function GameModel() {
     }
     return GameModel;
+}());
+
+var GameVariables = (function () {
+    function GameVariables() {
+    }
+    return GameVariables;
 }());
 
 //# sourceMappingURL=fly-game.model.js.map
@@ -434,57 +443,6 @@ var FlyGameService = (function () {
             brownDark: 0x23190f,
             blue: 0x68c3c0,
         };
-        this.Variables = {
-            speed: 0,
-            initSpeed: .00035,
-            baseSpeed: .00035,
-            targetBaseSpeed: .00035,
-            incrementSpeedByTime: .0000025,
-            incrementSpeedByLevel: .000005,
-            distanceForSpeedUpdate: 100,
-            speedLastUpdate: 0,
-            distance: 0,
-            ratioSpeedDistance: 50,
-            energy: 100,
-            ratioSpeedEnergy: 3,
-            level: 1,
-            levelLastUpdate: 0,
-            distanceForLevelUpdate: 1000,
-            planeDefaultHeight: 100,
-            planeAmpHeight: 80,
-            planeAmpWidth: 75,
-            planeMoveSensivity: 0.005,
-            planeRotXSensivity: 0.0008,
-            planeRotZSensivity: 0.0004,
-            planeFallSpeed: .001,
-            planeMinSpeed: 1.2,
-            planeMaxSpeed: 1.6,
-            planeSpeed: 0,
-            planeCollisionDisplacementX: 0,
-            planeCollisionSpeedX: 0,
-            planeCollisionDisplacementY: 0,
-            planeCollisionSpeedY: 0,
-            seaRadius: 600,
-            seaLength: 800,
-            wavesMinAmp: 5,
-            wavesMaxAmp: 20,
-            wavesMinSpeed: 0.001,
-            wavesMaxSpeed: 0.003,
-            cameraFarPos: 500,
-            cameraNearPos: 150,
-            cameraSensivity: 0.002,
-            coinDistanceTolerance: 15,
-            coinValue: 3,
-            coinsSpeed: .5,
-            coinLastSpawn: 0,
-            distanceForCoinsSpawn: 100,
-            ennemyDistanceTolerance: 10,
-            ennemyValue: 10,
-            ennemiesSpeed: .6,
-            ennemyLastSpawn: 0,
-            distanceForEnnemiesSpawn: 50,
-            status: 'playing'
-        };
     }
     FlyGameService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -497,7 +455,7 @@ var FlyGameService = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/fly-game/model/airplane.servive.ts":
+/***/ "../../../../../src/app/fly-game/model/airplane.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -507,7 +465,7 @@ var AirPlaneServive = (function () {
     }
     Object.defineProperty(AirPlaneServive.prototype, "cockpit", {
         get: function () {
-            var geomCockpit = new THREE.BoxGeometry(80, 50, 50, 1, 1, 1);
+            var geomCockpit = new THREE.CubeGeometry(80, 50, 50, 1, 1, 1);
             var matCockpit = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             geomCockpit.vertices[4].y -= 10;
             geomCockpit.vertices[4].z += 20;
@@ -527,7 +485,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "engine", {
         get: function () {
-            var geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
+            var geomEngine = new THREE.CubeGeometry(20, 50, 50, 1, 1, 1);
             var matEngine = new THREE.MeshPhongMaterial({ color: 0xd8d0d1, shading: THREE.FlatShading });
             var engine = new THREE.Mesh(geomEngine, matEngine);
             engine.position.x = 40;
@@ -540,7 +498,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "tail", {
         get: function () {
-            var geomTailPlane = new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
+            var geomTailPlane = new THREE.CubeGeometry(15, 20, 5, 1, 1, 1);
             var matTailPlane = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             var tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
             tailPlane.position.set(-35, 25, 0);
@@ -553,7 +511,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "wing", {
         get: function () {
-            var geomSideWing = new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
+            var geomSideWing = new THREE.CubeGeometry(40, 8, 150, 1, 1, 1);
             var matSideWing = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             var sideWing = new THREE.Mesh(geomSideWing, matSideWing);
             sideWing.position.set(20, 10, 0);
@@ -566,7 +524,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "windshield", {
         get: function () {
-            var geomWindshield = new THREE.BoxGeometry(3, 15, 20, 1, 1, 1);
+            var geomWindshield = new THREE.CubeGeometry(3, 15, 20, 1, 1, 1);
             var matWindshield = new THREE.MeshPhongMaterial({ color: 0xd8d0d1, transparent: true, opacity: .3, shading: THREE.FlatShading });
             var windshield = new THREE.Mesh(geomWindshield, matWindshield);
             windshield.position.set(5, 27, 0);
@@ -579,7 +537,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "Propeller", {
         get: function () {
-            var geomPropeller = new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+            var geomPropeller = new THREE.CubeGeometry(20, 10, 10, 1, 1, 1);
             geomPropeller.vertices[4].y -= 5;
             geomPropeller.vertices[4].z += 5;
             geomPropeller.vertices[5].y -= 5;
@@ -592,7 +550,7 @@ var AirPlaneServive = (function () {
             var propeller = new THREE.Mesh(geomPropeller, matPropeller);
             propeller.castShadow = true;
             propeller.receiveShadow = true;
-            var geomBlade = new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
+            var geomBlade = new THREE.CubeGeometry(1, 100, 20, 1, 1, 1);
             var matBlade = new THREE.MeshPhongMaterial({ color: 0x59332e, shading: THREE.FlatShading });
             var blade = new THREE.Mesh(geomBlade, matBlade);
             blade.position.set(8, 0, 0);
@@ -607,7 +565,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "wheelProtecR", {
         get: function () {
-            var wheelProtecGeom = new THREE.BoxGeometry(30, 15, 10, 1, 1, 1);
+            var wheelProtecGeom = new THREE.CubeGeometry(30, 15, 10, 1, 1, 1);
             var wheelProtecMat = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             var wheelProtecR = new THREE.Mesh(wheelProtecGeom, wheelProtecMat);
             wheelProtecR.position.set(25, -20, 25);
@@ -618,7 +576,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "wheelTireR", {
         get: function () {
-            var wheelTireGeom = new THREE.BoxGeometry(24, 24, 4);
+            var wheelTireGeom = new THREE.CubeGeometry(24, 24, 4);
             var wheelTireMat = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             var wheelTireR = new THREE.Mesh(wheelTireGeom, wheelTireMat);
             wheelTireR.add(this.wheelAxis);
@@ -629,7 +587,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "wheelAxis", {
         get: function () {
-            var wheelAxisGeom = new THREE.BoxGeometry(10, 10, 6);
+            var wheelAxisGeom = new THREE.CubeGeometry(10, 10, 6);
             var wheelAxisMat = new THREE.MeshPhongMaterial({ color: 0x59332e, shading: THREE.FlatShading });
             var wheelAxis = new THREE.Mesh(wheelAxisGeom, wheelAxisMat);
             return wheelAxis;
@@ -639,7 +597,7 @@ var AirPlaneServive = (function () {
     });
     Object.defineProperty(AirPlaneServive.prototype, "suspension", {
         get: function () {
-            var suspensionGeom = new THREE.BoxGeometry(4, 20, 4);
+            var suspensionGeom = new THREE.CubeGeometry(4, 20, 4);
             suspensionGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 10, 0));
             var suspensionMat = new THREE.MeshPhongMaterial({ color: 0xf25346, shading: THREE.FlatShading });
             var suspension = new THREE.Mesh(suspensionGeom, suspensionMat);
@@ -681,7 +639,7 @@ var AirPlaneServive = (function () {
     return AirPlaneServive;
 }());
 
-//# sourceMappingURL=airplane.servive.js.map
+//# sourceMappingURL=airplane.service.js.map
 
 /***/ }),
 
@@ -727,18 +685,72 @@ var CloudService = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/fly-game/model/ennemy.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export EnnemyService */
+/* unused harmony export EnnemyModel */
+var EnnemyService = (function () {
+    function EnnemyService() {
+    }
+    Object.defineProperty(EnnemyService.prototype, "mesh", {
+        get: function () {
+            var geom = new THREE.TetrahedronGeometry(8, 2);
+            var mat = new THREE.MeshPhongMaterial({
+                color: 0xf25346,
+                shininess: 0,
+                specular: 0xffffff,
+                shading: THREE.FlatShading
+            });
+            var mesh = new THREE.Mesh(geom, mat);
+            mesh.castShadow = true;
+            var angle = 0;
+            var dist = 0;
+            return mesh;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return EnnemyService;
+}());
+
+var EnnemyModel = (function () {
+    function EnnemyModel() {
+        this.geom = new THREE.TetrahedronGeometry(8, 2);
+        this.mat = new THREE.MeshPhongMaterial({
+            color: 0xf25346,
+            shininess: 0,
+            specular: 0xffffff,
+            shading: THREE.FlatShading
+        });
+        this.mesh = new THREE.Mesh(this.geom, this.mat);
+        this.angle = 0;
+        this.dist = 0;
+    }
+    return EnnemyModel;
+}());
+
+//# sourceMappingURL=ennemy.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/fly-game/model/index.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__airplane_servive__ = __webpack_require__("../../../../../src/app/fly-game/model/airplane.servive.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__airplane_servive__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sky_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sky.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__sky_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sea_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sea.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__sea_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cloud_service__ = __webpack_require__("../../../../../src/app/fly-game/model/cloud.service.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__cloud_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ennemy_model__ = __webpack_require__("../../../../../src/app/fly-game/model/ennemy.model.ts");
+/* unused harmony reexport EnnemyService */
+/* unused harmony reexport EnnemyModel */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__airplane_service__ = __webpack_require__("../../../../../src/app/fly-game/model/airplane.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__airplane_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sky_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sky.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__sky_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sea_service__ = __webpack_require__("../../../../../src/app/fly-game/model/sea.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__sea_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cloud_service__ = __webpack_require__("../../../../../src/app/fly-game/model/cloud.service.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__cloud_service__["a"]; });
+
 
 
 
@@ -1007,11 +1019,11 @@ var FoodComponent = (function () {
             };
             this.controls.addCube = function () {
                 var cubeSize = Math.ceil((Math.random() * 3));
-                var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+                var CubeGeometry = new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize);
                 var cubeMaterial = new THREE.MeshLambertMaterial({
                     color: Math.random() * 0xffffff
                 });
-                var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                var cube = new THREE.Mesh(CubeGeometry, cubeMaterial);
                 cube.castShadow = true;
                 cube.position.x = -30 + Math.round((Math.random() * _this.planeGeometry.parameters.width));
                 cube.position.y = Math.round((Math.random() * 5));
@@ -1126,7 +1138,7 @@ var FoodModule = (function () {
 /***/ "../../../../../src/app/resume/resume.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"resume-body\">\n\n    <div class=\"person-info\">\n        <div class=\"head\">\n            <img class=\"head-img\" src=\"assets/picture/head.jpg\">\n        </div>\n        <div class=\"title\">\n            郑染秋\n        </div>\n        <div class=\"info\">\n            前端开发工程师\n        </div>\n        <div class=\"info\">\n            FIS Global（中国）前端开发工程师\n        </div>\n        <div class=\"info\">\n            <i class=\"info-icon fa fa-envelope-o\"></i>foam923@live.cn\n            <br>\n            <i class=\"info-icon fa fa-phone\"></i> 15921461671\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-tech\">\n    <div class=\"tech-info\">\n        <div class=\"title\">\n            技术栈\n        </div>\n        <div class=\"tech-chart\">\n            <div class=\"tech-chart\" #techChart>\n\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-life\">\n    <div class=\"title\">\n        人生经历\n    </div>\n    <div class=\"timeline\">\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-success\">\n                <i class=\"fa fa-home\"></i>\n            </span>\n            <span class=\"line-label\">西安电子科技大学 通信工程 本科\n                <span class=\"line-year\"> 2012 - 2016</span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-success\">\n                <i class=\"fa fa-briefcase\"></i>\n            </span>\n            <span class=\"line-label\">FIS 前端开发工程师\n                <span class=\"line-year\"> 2016 - 2018 </span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-info\">\n                <i class=\"fa fa-send-o\"></i>\n            </span>\n            <span class=\"line-label\">...\n                <span class=\"line-year\"> develop </span>\n            </span>\n        </div>\n        <div class=\"line-child\">\n            <span class=\"line-icon icon-danger\">\n                <i class=\"fa fa-bullseye\"></i>\n            </span>\n            <span class=\"line-label\">前端 移动端 小程序 webvr/ar 架构\n                <span class=\"line-year\"> future </span>\n            </span>\n        </div>\n    </div>\n</div>\n\n<div class=\"resume-project\">\n    <div class=\"title\">\n        项目经历\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view\">\n            <div class=\"view-thumbnail\">\n                <div class=\"data-view\" #dataView>\n\n                </div>\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">数据可视化配置系统</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                从数据->图表->界面的可视化配置工具，可以高效快速的定制一个数据可视化应用，零代码量\n                <br>\n                <br> 使用Angular + Echarts + Node.js构建\n                <br>\n            </div>\n        </div>\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view ui-thumbnail\">\n            <div class=\"view-thumbnail\">\n                <div class=\"ui-view\" #uiView>\n\n                </div>\n\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">UI组件库/模版库</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                一套前端界面解决方案，从原子级的组件->组装成常用模式->应用模版，既能够进行原子级\n                <br>别的开发，也能够利用应用模版快速构建项目\n                <br>\n                <br> 基于Angular开发\n                <br>\n            </div>\n        </div>\n    </div>\n    <div class=\"project\">\n        <div class=\"project-view\">\n            <div class=\"view-thumbnail\" id=\"banana\">\n\n            </div>\n        </div>\n        <div class=\"project-label\">\n            <div class=\"project-title\">\n                <span class=\"title-label\">three.js应用</span>\n                <div class=\"view-icon\">\n                    <div class=\"view-online\">\n                        <i class=\"fa fa-eye\"></i>\n                    </div>\n                    <div class=\"view-github\">\n                        <i class=\"fa fa-github\"></i>\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-content\">\n                模块化的来开发一个three.js的飞行小游戏，后续还会在这个项目中进行webvr小应用的尝试\n                <br>\n                <br> 使用Angular + three.js 来开发\n                <br>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"resume-body end-body\">\n    <div class=\"title\">\n        THANKS\n    </div>\n    <div class=\"tag-box\">\n        <div class=\"row\">\n            <div class=\"people-tag lg green\">\n                爱技术\n            </div>\n            <div class=\"people-tag sm pink\">\n                新鲜事物\n            </div>\n            <div class=\"people-tag\">\n                喜欢钻研\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag purple\">\n                学习速度快\n            </div>\n            <div class=\"people-tag lg red\">\n                成长\n            </div>\n            <div class=\"people-tag sm orange\">\n                有猫\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag red\">\n                喜欢游戏\n            </div>\n            <div class=\"people-tag\">\n                追求美\n            </div>\n            <div class=\"people-tag lg pink\">\n                动手主义\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"people-tag orange\">\n                热爱思考\n            </div>\n            <div class=\"people-tag green lg\">\n                爱折腾\n            </div>\n            <div class=\"people-tag sm purple\">\n                有计划\n            </div>\n        </div>\n    </div>\n    <div class=\"contact-info-box\">\n\n        <div class=\"info\">\n            <i class=\"info-icon fa fa-envelope-o\"></i> foam923@live.cn\n\n            <i class=\"info-icon fa fa-phone\"></i> 15921461671\n        </div>\n    </div>\n    <div class=\"motto\">生命在于折腾</div>\n    <div class=\"hope\">希望明天能够和你一起努力 </div>\n</div>\n"
+module.exports = "<div class=\"resume-box\">\n    <div class=\"resume-body\" [@CardAnimation]=\"index === 1 ? 'down' : 'up'\">\n\n        <div class=\"person-info\">\n            <div class=\"head\">\n                <nz-tooltip [nzTitle]=\"'开始点击吧'\">\n                    <img nz-tooltip class=\"head-img\" src=\"assets/picture/head.jpg\">\n                </nz-tooltip>\n            </div>\n            <div class=\"title\">\n                郑染秋\n            </div>\n            <div class=\"info\">\n                前端开发工程师\n            </div>\n            <div class=\"info\">\n                FIS Global（中国）前端开发工程师\n            </div>\n            <div class=\"info\">\n                <i class=\"info-icon fa fa-envelope-o\"></i>foam923@live.cn\n                <br>\n                <i class=\"info-icon fa fa-phone\"></i> 15921461671\n            </div>\n        </div>\n    </div>\n\n    <div class=\"resume-tech\" [@CardAnimation]=\"index === 2 ? 'down' : 'up'\">\n        <div class=\"tech-info\">\n            <div class=\"title\">\n                技术栈\n            </div>\n            <div class=\"tech-chart\">\n                <div class=\"tech-chart\" #techChart>\n\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"resume-life\" [@CardAnimation]=\"index === 3 ? 'down' : 'up'\">\n        <div class=\"title\">\n            人生经历\n        </div>\n        <div class=\"timeline\">\n            <div class=\"line-child\">\n                <span class=\"line-icon icon-success\">\n                    <i class=\"fa fa-home\"></i>\n                </span>\n                <span class=\"line-label\">西安电子科技大学 通信工程 本科\n                    <span class=\"line-year\"> 2012 - 2016</span>\n                </span>\n            </div>\n            <div class=\"line-child\">\n                <span class=\"line-icon icon-success\">\n                    <i class=\"fa fa-briefcase\"></i>\n                </span>\n                <span class=\"line-label\">FIS 前端开发工程师\n                    <span class=\"line-year\"> 2016 - 2018 </span>\n                </span>\n            </div>\n            <div class=\"line-child\">\n                <span class=\"line-icon icon-info\">\n                    <i class=\"fa fa-send-o\"></i>\n                </span>\n                <span class=\"line-label\">...\n                    <span class=\"line-year\"> develop </span>\n                </span>\n            </div>\n            <div class=\"line-child\">\n                <span class=\"line-icon icon-danger\">\n                    <i class=\"fa fa-bullseye\"></i>\n                </span>\n                <span class=\"line-label\">前端 移动端 小程序 webvr/ar 架构\n                    <span class=\"line-year\"> future </span>\n                </span>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"resume-project\" [@CardAnimation]=\"index === 4 ? 'down' : 'up'\">\n        <div class=\"title\">\n            项目经历\n        </div>\n        <div class=\"project\">\n                <div class=\"project-box\">\n            <div class=\"project-view\">\n                <div class=\"view-thumbnail\">\n                    <div class=\"data-view\" #dataView>\n\n                    </div>\n                </div>\n            </div>\n            <div class=\"project-label\">\n                <div class=\"project-title\">\n                    <span class=\"title-label\">数据可视化配置系统</span>\n                    <div class=\"view-icon\">\n                        <div class=\"view-online\">\n                            <i class=\"fa fa-eye\"></i>\n                        </div>\n                        <div class=\"view-github\">\n                            <i class=\"fa fa-github\"></i>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"project-content\">\n                    从数据->图表->界面的可视化配置工具，可以高效快速的定制一个数据可视化应用，零代码量\n                    <br>\n                    <br> 使用Angular+Echarts构建前端 Node.js构建后端\n                    <br>\n                </div>\n            </div>\n                </div>\n        </div>\n        <div class=\"project\">\n            <div class=\"project-box\">\n                <div class=\"project-view ui-thumbnail\">\n                    <div class=\"view-thumbnail\">\n                        <div class=\"ui-view\" #uiView>\n\n                        </div>\n\n                    </div>\n                </div>\n                <div class=\"project-label\">\n                    <div class=\"project-title\">\n                        <span class=\"title-label\">UI组件库/模版库</span>\n                        <div class=\"view-icon\">\n                            <div class=\"view-online\">\n                                <i class=\"fa fa-eye\"></i>\n                            </div>\n                            <div class=\"view-github\">\n                                <i class=\"fa fa-github\"></i>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"project-content\">\n                        一套前端界面解决方案，从原子级的组件->组装成常用模式->应用模版，既能够进行原子级\n                        <br>别的开发，也能够利用应用模版快速构建项目\n                        <br>\n                        <br> 使用Angular开发\n                        <br>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"project\">\n                <div class=\"project-box\">\n            <div class=\"project-view\">\n                <div class=\"view-thumbnail\" id=\"banana\">\n\n                </div>\n            </div>\n            <div class=\"project-label\">\n                <div class=\"project-title\">\n                    <span class=\"title-label\">three-js小应用</span>\n                    <div class=\"view-icon\">\n                        <div class=\"view-online\">\n                            <i class=\"fa fa-eye\"></i>\n                        </div>\n                        <div class=\"view-github\">\n                            <i class=\"fa fa-github\"></i>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"project-content\">\n                    一个基于three.js来进行开发的飞行小游戏，后续还会在这个项目中进行webvr小应用的尝试\n                    <br>\n                    <br> 使用three.js开发\n                    <br>\n                </div>\n            </div>\n        </div>\n        </div>\n    </div>\n    <div class=\"resume-body end-body\" [@CardAnimation]=\"index === 5 ? 'down' : 'up'\">\n        <div class=\"title\">\n            THANKS\n        </div>\n        <div class=\"tag-box\">\n            <div class=\"row\">\n                <div class=\"people-tag lg green\">\n                    爱技术\n                </div>\n                <div class=\"people-tag sm pink\">\n                    新鲜事物\n                </div>\n                <div class=\"people-tag\">\n                    喜欢钻研\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"people-tag purple\">\n                    学习速度快\n                </div>\n                <div class=\"people-tag lg red\">\n                    成长\n                </div>\n                <div class=\"people-tag sm orange\">\n                    有猫\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"people-tag red\">\n                    喜欢游戏\n                </div>\n                <div class=\"people-tag\">\n                    追求美\n                </div>\n                <div class=\"people-tag lg pink\">\n                    动手主义\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"people-tag orange\">\n                    热爱思考\n                </div>\n                <div class=\"people-tag green lg\">\n                    爱折腾\n                </div>\n                <div class=\"people-tag sm purple\">\n                    有计划\n                </div>\n            </div>\n        </div>\n        <div class=\"contact-info-box\">\n\n            <div class=\"info\">\n                <i class=\"info-icon fa fa-envelope-o\"></i> foam923@live.cn\n\n                <i class=\"info-icon fa fa-phone\"></i> 15921461671\n            </div>\n        </div>\n        <div class=\"motto\">生命在于折腾</div>\n        <div class=\"hope\">希望明天能够和你一起努力 </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -1138,7 +1150,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".resume-body {\n  height: 100%;\n  width: 100%;\n  background-color: gold; }\n  .resume-body .person-info {\n    position: relative;\n    top: 50%;\n    -webkit-transform: translateY(-50%);\n            transform: translateY(-50%); }\n    .resume-body .person-info .head .head-img {\n      border-radius: 50%; }\n    .resume-body .person-info .title {\n      font-size: 36px;\n      line-height: 46px;\n      padding: 20px 5px 5px 5px;\n      opacity: 0.9; }\n    .resume-body .person-info .info {\n      font-size: 14px;\n      padding: 2px;\n      opacity: 0.9; }\n      .resume-body .person-info .info .info-icon {\n        padding-right: 5px; }\n\n.resume-tech {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: white; }\n  .resume-tech .tech-info {\n    height: 100%; }\n    .resume-tech .tech-info .title {\n      font-size: 36px;\n      line-height: 46px;\n      padding: 30px;\n      opacity: 0.8; }\n    .resume-tech .tech-info .tech-chart {\n      width: 100%;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      height: calc(100% - 106px);\n      background-color: #333333; }\n      .resume-tech .tech-info .tech-chart .tech-chart {\n        height: 100%;\n        width: 100%; }\n\n.resume-life {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: rgba(255, 255, 255, 0.8); }\n  .resume-life .title {\n    font-size: 36px;\n    line-height: 46px;\n    height: 8%;\n    opacity: 0.9;\n    padding: 30px 0; }\n  .resume-life .timeline {\n    position: relative;\n    left: 50%;\n    -webkit-transform: translateX(-40%) translateY(-50%);\n            transform: translateX(-40%) translateY(-50%);\n    top: 50%;\n    height: 400px;\n    width: 450px;\n    padding: 0 15px 15px; }\n    .resume-life .timeline .line-child {\n      font-size: 16px;\n      line-height: 24px;\n      padding: 15px 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex; }\n      .resume-life .timeline .line-child .line-icon {\n        font-size: 48px; }\n      .resume-life .timeline .line-child .icon-success {\n        color: #79b962; }\n      .resume-life .timeline .line-child .icon-info {\n        color: #5a7b94; }\n      .resume-life .timeline .line-child .icon-danger {\n        color: #d68e8e; }\n      .resume-life .timeline .line-child .line-label {\n        padding-left: 15px;\n        padding-top: 12px; }\n        .resume-life .timeline .line-child .line-label .line-year {\n          padding-left: 5px; }\n\n.resume-project {\n  background-color: #333333;\n  height: 100%;\n  width: 100%;\n  color: rgba(255, 255, 255, 0.8); }\n  .resume-project .title {\n    font-size: 36px;\n    line-height: 46px;\n    height: 8%;\n    opacity: 0.9;\n    padding: 0px 0 100px 0; }\n  .resume-project .project {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    width: 100%;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n    .resume-project .project .project-view {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: vertical;\n      -webkit-box-direction: normal;\n          -ms-flex-direction: column;\n              flex-direction: column;\n      width: 20%;\n      position: relative;\n      top: -35px; }\n      .resume-project .project .project-view .view-thumbnail {\n        height: 200px;\n        width: 100%; }\n        .resume-project .project .project-view .view-thumbnail .data-view, .resume-project .project .project-view .view-thumbnail .ui-view {\n          width: 100%;\n          height: 100%; }\n    .resume-project .project .ui-thumbnail {\n      top: -50px; }\n  .resume-project .project-label {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding: 0 15px; }\n    .resume-project .project-label .project-title {\n      font-size: 20px;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center; }\n      .resume-project .project-label .project-title .title-label {\n        position: relative; }\n      .resume-project .project-label .project-title .view-icon {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        font-size: 24px;\n        padding-left: 5px; }\n        .resume-project .project-label .project-title .view-icon .view-online {\n          padding: 10px;\n          cursor: pointer; }\n        .resume-project .project-label .project-title .view-icon .view-github {\n          padding: 10px;\n          cursor: pointer; }\n    .resume-project .project-label .project-content {\n      padding-top: 10px;\n      font-size: 14px;\n      text-align: left; }\n\n.resume-body .title {\n  font-size: 36px;\n  line-height: 46px;\n  padding: 30px 0 60px 0; }\n\n.resume-body .motto {\n  font-size: 14px; }\n\n.resume-body .hope {\n  font-size: 14px; }\n\n.resume-body .contact-info-box .title {\n  font-size: 16px;\n  line-height: 22px; }\n\n.resume-body .contact-info-box .head .head-img {\n  border-radius: 50%; }\n\n.resume-body .contact-info-box .info {\n  padding: 5px;\n  font-size: 18px;\n  padding: 50px;\n  text-align: left;\n  display: inline-block; }\n  .resume-body .contact-info-box .info .info-icon {\n    font-size: 22px;\n    padding: 0 5px; }\n\n.resume-body .tag-box {\n  padding-top: 30px;\n  color: rgba(255, 255, 255, 0.8);\n  position: relative; }\n  .resume-body .tag-box .row {\n    padding: 5px 0; }\n  .resume-body .tag-box .people-tag {\n    padding: 10px;\n    border-radius: 4px;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    padding: 10px;\n    background-color: #0e98da;\n    font-size: 16px;\n    margin: 0 5px; }\n  .resume-body .tag-box .lg {\n    font-size: 22px; }\n  .resume-body .tag-box .sm {\n    font-size: 14px; }\n  .resume-body .tag-box .green {\n    background: #4abd4a; }\n  .resume-body .tag-box .pink {\n    background: #e2929e; }\n  .resume-body .tag-box .red {\n    background: #f35c5a; }\n  .resume-body .tag-box .purple {\n    background: #a754a7; }\n  .resume-body .tag-box .orange {\n    background: #dea02f; }\n\n.end-body {\n  color: rgba(255, 255, 255, 0.8);\n  background: #333333; }\n\n.ant-timeline-item-content {\n  font-size: 16px; }\n", ""]);
+exports.push([module.i, ".resume-box {\n  height: 100%;\n  width: 100%;\n  background: #333333; }\n  .resume-box .resume-body {\n    height: 100%;\n    width: 100%;\n    background-color: gold; }\n    .resume-box .resume-body .person-info {\n      position: relative;\n      top: 50%;\n      -webkit-transform: translateY(-50%);\n              transform: translateY(-50%); }\n      .resume-box .resume-body .person-info .head .head-img {\n        border-radius: 50%;\n        -webkit-animation: blinblin 2s infinite;\n                animation: blinblin 2s infinite;\n        -webkit-animation-direction: alternate;\n                animation-direction: alternate; }\n\n@-webkit-keyframes blinblin {\n  from {\n    box-shadow: 0px 0px 15px #000; }\n  to {\n    box-shadow: 0px 0px 150px #000; } }\n\n@keyframes blinblin {\n  from {\n    box-shadow: 0px 0px 15px #000; }\n  to {\n    box-shadow: 0px 0px 150px #000; } }\n      .resume-box .resume-body .person-info .title {\n        font-size: 36px;\n        line-height: 46px;\n        padding: 20px 5px 5px 5px;\n        opacity: 0.9; }\n      .resume-box .resume-body .person-info .info {\n        font-size: 14px;\n        padding: 2px;\n        opacity: 0.9; }\n        .resume-box .resume-body .person-info .info .info-icon {\n          padding-right: 5px; }\n  .resume-box .resume-tech {\n    background-color: #333333;\n    height: 100%;\n    width: 100%;\n    color: white; }\n    .resume-box .resume-tech .tech-info {\n      height: 100%; }\n      .resume-box .resume-tech .tech-info .title {\n        font-size: 36px;\n        line-height: 46px;\n        padding: 30px;\n        opacity: 0.8; }\n      .resume-box .resume-tech .tech-info .tech-chart {\n        width: 100%;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        height: calc(100% - 106px);\n        background-color: #333333; }\n        .resume-box .resume-tech .tech-info .tech-chart .tech-chart {\n          height: 100%;\n          width: 100%; }\n  .resume-box .resume-life {\n    background-color: #333333;\n    height: 100%;\n    width: 100%;\n    color: rgba(255, 255, 255, 0.8); }\n    .resume-box .resume-life .title {\n      font-size: 36px;\n      line-height: 46px;\n      height: 8%;\n      opacity: 0.9;\n      padding: 30px 0; }\n    .resume-box .resume-life .timeline {\n      position: relative;\n      left: 50%;\n      -webkit-transform: translateX(-40%) translateY(-50%);\n              transform: translateX(-40%) translateY(-50%);\n      top: 50%;\n      height: 400px;\n      width: 450px;\n      padding: 0 15px 15px; }\n      .resume-box .resume-life .timeline .line-child {\n        font-size: 16px;\n        line-height: 24px;\n        padding: 15px 0;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex; }\n        .resume-box .resume-life .timeline .line-child .line-icon {\n          font-size: 48px; }\n        .resume-box .resume-life .timeline .line-child .icon-success {\n          color: #79b962; }\n        .resume-box .resume-life .timeline .line-child .icon-info {\n          color: #5a7b94; }\n        .resume-box .resume-life .timeline .line-child .icon-danger {\n          color: #d68e8e; }\n        .resume-box .resume-life .timeline .line-child .line-label {\n          padding-left: 15px;\n          padding-top: 12px; }\n          .resume-box .resume-life .timeline .line-child .line-label .line-year {\n            padding-left: 5px; }\n  .resume-box .resume-project {\n    background-color: #333333;\n    height: 100%;\n    width: 100%;\n    color: rgba(255, 255, 255, 0.8); }\n    .resume-box .resume-project .title {\n      font-size: 36px;\n      line-height: 46px;\n      height: 8%;\n      opacity: 0.9;\n      padding: 0px 0 100px 0; }\n    .resume-box .resume-project .project {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      width: 100%;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n      .resume-box .resume-project .project .project-box {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex; }\n        .resume-box .resume-project .project .project-box .project-view {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          position: relative;\n          top: -35px; }\n          .resume-box .resume-project .project .project-box .project-view .view-thumbnail {\n            height: 200px;\n            width: 200px; }\n            .resume-box .resume-project .project .project-box .project-view .view-thumbnail .data-view,\n            .resume-box .resume-project .project .project-box .project-view .view-thumbnail .ui-view {\n              width: 100%;\n              height: 100%; }\n        .resume-box .resume-project .project .project-box .ui-thumbnail {\n          top: -50px; }\n      .resume-box .resume-project .project .project-label {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        padding: 0 15px; }\n        .resume-box .resume-project .project .project-label .project-title {\n          font-size: 20px;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-align: center;\n              -ms-flex-align: center;\n                  align-items: center; }\n          .resume-box .resume-project .project .project-label .project-title .title-label {\n            position: relative; }\n          .resume-box .resume-project .project .project-label .project-title .view-icon {\n            display: -webkit-box;\n            display: -ms-flexbox;\n            display: flex;\n            font-size: 24px;\n            padding-left: 5px; }\n            .resume-box .resume-project .project .project-label .project-title .view-icon .view-online {\n              padding: 10px;\n              cursor: pointer; }\n            .resume-box .resume-project .project .project-label .project-title .view-icon .view-github {\n              padding: 10px;\n              cursor: pointer; }\n        .resume-box .resume-project .project .project-label .project-content {\n          padding-top: 10px;\n          font-size: 14px;\n          text-align: left; }\n  .resume-box .resume-body .title {\n    font-size: 36px;\n    line-height: 46px;\n    padding: 30px 0 60px 0; }\n  .resume-box .resume-body .motto {\n    font-size: 14px; }\n  .resume-box .resume-body .hope {\n    font-size: 14px; }\n  .resume-box .resume-body .contact-info-box .title {\n    font-size: 16px;\n    line-height: 22px; }\n  .resume-box .resume-body .contact-info-box .head .head-img {\n    border-radius: 50%; }\n  .resume-box .resume-body .contact-info-box .info {\n    padding: 5px;\n    font-size: 18px;\n    padding: 50px 0;\n    text-align: left;\n    display: inline-block; }\n    .resume-box .resume-body .contact-info-box .info .info-icon {\n      font-size: 22px;\n      padding: 0 5px; }\n  .resume-box .resume-body .tag-box {\n    padding-top: 30px;\n    color: rgba(255, 255, 255, 0.8);\n    position: relative; }\n    .resume-box .resume-body .tag-box .row {\n      padding: 5px 0; }\n    .resume-box .resume-body .tag-box .people-tag {\n      padding: 10px;\n      border-radius: 4px;\n      display: inline-block;\n      width: auto;\n      height: auto;\n      padding: 10px;\n      background-color: #0e98da;\n      font-size: 16px;\n      margin: 0 5px; }\n    .resume-box .resume-body .tag-box .lg {\n      font-size: 22px; }\n    .resume-box .resume-body .tag-box .sm {\n      font-size: 14px; }\n    .resume-box .resume-body .tag-box .green {\n      background: #4abd4a; }\n    .resume-box .resume-body .tag-box .pink {\n      background: #e2929e; }\n    .resume-box .resume-body .tag-box .red {\n      background: #f35c5a; }\n    .resume-box .resume-body .tag-box .purple {\n      background: #a754a7; }\n    .resume-box .resume-body .tag-box .orange {\n      background: #dea02f; }\n  .resume-box .end-body {\n    color: rgba(255, 255, 255, 0.8);\n    background: #333333; }\n  .resume-box .ant-timeline-item-content {\n    font-size: 16px; }\n\n@media screen and (max-width: 800px) {\n  .resume-project {\n    background-color: #333333;\n    height: 100%;\n    width: 100%;\n    color: rgba(255, 255, 255, 0.8); }\n    .resume-project .title {\n      font-size: 36px;\n      line-height: 46px;\n      height: 8%;\n      opacity: 0.9;\n      padding: 0px 0 100px 0; }\n    .resume-project .project {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      width: 100%;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      position: relative;\n      height: 200px; }\n      .resume-project .project .project-box {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: reverse;\n            -ms-flex-direction: column-reverse;\n                flex-direction: column-reverse; }\n        .resume-project .project .project-box .project-view {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          position: relative;\n          top: -35px; }\n          .resume-project .project .project-box .project-view .view-thumbnail {\n            height: 200px;\n            width: 200px;\n            position: relative;\n            left: 50%;\n            -webkit-transform: translateX(-50%);\n                    transform: translateX(-50%); }\n            .resume-project .project .project-box .project-view .view-thumbnail .data-view,\n            .resume-project .project .project-box .project-view .view-thumbnail .ui-view {\n              width: 100%;\n              height: 100%; }\n        .resume-project .project .project-box .ui-thumbnail {\n          top: -50px; }\n      .resume-project .project .project-label {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        padding: 0 15px;\n        z-index: 10; }\n        .resume-project .project .project-label .project-title {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-align: center;\n              -ms-flex-align: center;\n                  align-items: center; }\n          .resume-project .project .project-label .project-title .title-label {\n            font-size: 14px;\n            position: relative; }\n          .resume-project .project .project-label .project-title .view-icon {\n            display: -webkit-box;\n            display: -ms-flexbox;\n            display: flex;\n            font-size: 14px;\n            padding-left: 5px; }\n            .resume-project .project .project-label .project-title .view-icon .view-online {\n              padding: 10px;\n              cursor: pointer; }\n            .resume-project .project .project-label .project-title .view-icon .view-github {\n              padding: 10px;\n              cursor: pointer; }\n        .resume-project .project .project-label .project-content {\n          display: none;\n          padding-top: 10px;\n          font-size: 14px;\n          text-align: left; } }\n\n@media screen and (max-width: 800px) {\n  .resume-life .timeline .line-child .line-label {\n    width: 60%; } }\n", ""]);
 
 // exports
 
@@ -1174,12 +1186,32 @@ var ResumeComponent = (function () {
         this._el = _el;
         this._render = _render;
         this._resume = _resume;
+        this.index = 1;
     }
     ResumeComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var chart = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.techChart.nativeElement, 'dark');
-        var techData = this._resume.techTree;
-        chart.setOption(techData);
+        document.addEventListener('click', function () {
+            if (_this.index < 5) {
+                _this.index += 1;
+            }
+            else {
+                _this.index = 1;
+            }
+            if (_this.index === 2) {
+                _this.techTreeRender();
+            }
+            if (_this.index === 4) {
+                _this.projectRender();
+            }
+            if (_this.index === 5) {
+                document.getElementById('banana').removeChild(_this.renderer.domElement);
+            }
+        });
+    };
+    ResumeComponent.prototype.ngAfterViewInit = function () {
+    };
+    ResumeComponent.prototype.projectRender = function () {
+        var _this = this;
         var chartDataView = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.dataView.nativeElement, 'dark');
         var dataViewData = this._resume.dataView;
         chartDataView.setOption(dataViewData);
@@ -1213,7 +1245,10 @@ var ResumeComponent = (function () {
         this.renderRun();
         document.getElementById('banana').appendChild(this.renderer.domElement);
     };
-    ResumeComponent.prototype.ngAfterViewInit = function () {
+    ResumeComponent.prototype.techTreeRender = function () {
+        var chart = __WEBPACK_IMPORTED_MODULE_1_echarts__["init"](this.techChart.nativeElement, 'dark');
+        var techData = this._resume.techTree;
+        chart.setOption(techData);
     };
     ResumeComponent.prototype.bodyInit = function () {
         var el = document.getElementsByClassName('resume-body');
@@ -1280,7 +1315,20 @@ var ResumeComponent = (function () {
             selector: 'app-resume',
             template: __webpack_require__("../../../../../src/app/resume/resume.component.html"),
             styles: [__webpack_require__("../../../../../src/app/resume/resume.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */]],
+            animations: [
+                Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_36" /* trigger */])('CardAnimation', [
+                    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_33" /* state */])('up', Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_34" /* style */])({
+                        position: 'absolute',
+                        top: '-100%'
+                    })),
+                    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_33" /* state */])('down', Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_34" /* style */])({
+                        position: 'absolute',
+                        top: '0'
+                    })),
+                    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_35" /* transition */])('up <=> down', Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_21" /* animate */])('1000ms cubic-bezier(0.645, 0.045, 0.355, 1)'))
+                ])
+            ]
         }),
         __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Renderer2 */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__resume_service__["a" /* ResumeService */]) === "function" && _f || Object])
     ], ResumeComponent);
@@ -1300,6 +1348,7 @@ var ResumeComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resume_component__ = __webpack_require__("../../../../../src/app/resume/resume.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng_zorro_antd__ = __webpack_require__("../../../../ng-zorro-antd/esm5/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1309,13 +1358,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var ResumeModule = (function () {
     function ResumeModule() {
     }
     ResumeModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */]
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_3_ng_zorro_antd__["a" /* NgZorroAntdModule */]
             ],
             declarations: [__WEBPACK_IMPORTED_MODULE_2__resume_component__["a" /* ResumeComponent */]]
         })
