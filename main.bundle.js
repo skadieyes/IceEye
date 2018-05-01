@@ -1207,8 +1207,41 @@ var ResumeComponent = (function () {
                 document.getElementById('banana').removeChild(_this.renderer.domElement);
             }
         });
+        if (!this.IsPC()) {
+            document.addEventListener('touchend', function () {
+                if (_this.index < 5) {
+                    _this.index += 1;
+                }
+                else {
+                    _this.index = 1;
+                }
+                if (_this.index === 2) {
+                    _this.techTreeRender();
+                }
+                if (_this.index === 4) {
+                    _this.projectRender();
+                }
+                if (_this.index === 5) {
+                    document.getElementById('banana').removeChild(_this.renderer.domElement);
+                }
+            });
+        }
     };
     ResumeComponent.prototype.ngAfterViewInit = function () {
+    };
+    ResumeComponent.prototype.IsPC = function () {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ['Android', 'iPhone',
+            'SymbianOS', 'Windows Phone',
+            'iPad', 'iPod'];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     };
     ResumeComponent.prototype.projectRender = function () {
         var _this = this;
