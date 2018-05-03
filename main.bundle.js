@@ -146,6 +146,7 @@ var routes = [
     { path: 'food', component: __WEBPACK_IMPORTED_MODULE_1__food_food_component__["a" /* FoodComponent */] },
     { path: 'fly', component: __WEBPACK_IMPORTED_MODULE_2__fly_game_fly_game_component__["a" /* FlyGameComponent */] },
     { path: 'resume', component: __WEBPACK_IMPORTED_MODULE_3__resume_resume_component__["a" /* ResumeComponent */] },
+    { path: '**', component: __WEBPACK_IMPORTED_MODULE_3__resume_resume_component__["a" /* ResumeComponent */] },
     { path: '', redirectTo: 'resume', pathMatch: 'full' },
 ];
 var AppRoutes = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
