@@ -32,7 +32,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "html,\nbody,\ndiv {\n  border: 0;\n  margin: 0;\n  padding: 0; }\n", ""]);
+exports.push([module.i, "html,\nbody,\ndiv {\n  border: 0;\n  margin: 0;\n  padding: 0; }\n\nbody {\n  min-height: 568px; }\n", ""]);
 
 // exports
 
@@ -1413,7 +1413,8 @@ var ResumeComponent = (function () {
                 Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_36" /* trigger */])('CardAnimation', [
                     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_33" /* state */])('up', Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_34" /* style */])({
                         position: 'absolute',
-                        top: '-100%'
+                        top: '-100%',
+                        opacity: 0
                     })),
                     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_33" /* state */])('down', Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_34" /* style */])({
                         position: 'absolute',
